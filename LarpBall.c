@@ -52,6 +52,17 @@ const char *nomeTatica(int indice) {
     return taticas[indice][idiomaAtual];
 }
 
+const char *nomeSelecao(int indice) {
+    static const char *selecoes[5][11] = {
+        {"Brasil", "Brazil", "Brasil", "Brasile", "Bresil", "Brasilien", "Brezilya", "البرازيل", "巴西", "ブラジル", "브라질"},
+        {"Alemanha", "Germany", "Alemania", "Germania", "Allemagne", "Deutschland", "Almanya", "ألمانيا", "德国", "ドイツ", "독일"},
+        {"Franca", "France", "Francia", "Francia", "France", "Frankreich", "Fransa", "فرنسا", "法国", "フランス", "프랑스"},
+        {"Argentina", "Argentina", "Argentina", "Argentina", "Argentine", "Argentinien", "Arjantin", "الأرجنتين", "阿根廷", "アルゼンチン", "아르헨티나"},
+        {"Italianbrainrots", "Italianbrainrots", "Italianbrainrots", "Italianbrainrots", "Italianbrainrots", "Italianbrainrots", "Italianbrainrots", "إيتاليان براينروتس", "意大利脑洞队", "イタリアンブレインロッツ", "이탈리안 브레인롯츠"}
+    };
+    return selecoes[indice][idiomaAtual];
+}
+
 void escolherIdioma(void);
 
 char nomesSelecoes[5][20] = {
@@ -395,7 +406,7 @@ int energiaMediaRecursiva(int indice) {
 
 void mostrarElenco(int selecaoEscolhida) {
     int energiaTotal = 0;
-    printf("\n--- %s: %s ---\n", texto("ELENCO E TATICAS", "SQUAD AND TACTICS", "PLANTILLA Y TACTICAS", "ROSA E TATTICHE", "EFFECTIF ET TACTIQUES", "KADER UND TAKTIK", "KADRO VE TAKTIKLER", "الفريق والتكتيكات", "阵容和战术", "選手と戦術", "선수단 및 전술"), nomesSelecoes[selecaoEscolhida]);
+    printf("\n--- %s: %s ---\n", texto("ELENCO E TATICAS", "SQUAD AND TACTICS", "PLANTILLA Y TACTICAS", "ROSA E TATTICHE", "EFFECTIF ET TACTIQUES", "KADER UND TAKTIK", "KADRO VE TAKTIKLER", "الفريق والتكتيكات", "阵容和战术", "選手と戦術", "선수단 및 전술"), nomeSelecao(selecaoEscolhida));
     printf("%s: %s\n", texto("Tatica atual", "Current tactic", "Tactica actual", "Tattica attuale", "Tactique actuelle", "Aktuelle Taktik", "Mevcut taktik", "التكتيك الحالي", "当前战术", "現在の戦術", "현재 전술"), nomeTatica(taticaAtual));
     mostrarElencoRecursivo(0, &energiaTotal);
     printf("%s: %d\n", texto("Energia media do elenco", "Average squad energy", "Energia media de la plantilla", "Energia media della rosa", "Energie moyenne de l'effectif", "Durchschnittliche Kaderenergie", "Kadro ortalama enerjisi", "متوسط طاقة الفريق", "阵容平均体力", "チーム平均体力", "선수단 평균 체력"), energiaTotal / 16);
@@ -598,16 +609,16 @@ void jogarPartida(int selecaoEscolhida) {
     zerarEstatisticas();
     printf("\n--- %s: %s x %s ---\n",
            texto("INICIO DA PARTIDA", "MATCH START", "INICIO DEL PARTIDO", "INIZIO DELLA PARTITA", "DEBUT DU MATCH", "SPIELBEGINN", "MAC BASLANGICI", "بداية المباراة", "比赛开始", "試合開始", "경기 시작"),
-           nomesSelecoes[selecaoEscolhida], nomesSelecoes[selecaoAdversaria]);
-    printf("%s: %s\n", texto("Tatica escolhida", "Chosen tactic", "Tactica elegida", "Tattica scelta", "Tactique choisie", "Gewahlte Taktik", "Secilen taktik", "التكتيك المختار", "所选战术", "選択した戦術", "선택한 전술"), nomesTaticas[taticaAtual]);
+           nomeSelecao(selecaoEscolhida), nomeSelecao(selecaoAdversaria));
+    printf("%s: %s\n", texto("Tatica escolhida", "Chosen tactic", "Tactica elegida", "Tattica scelta", "Tactique choisie", "Gewahlte Taktik", "Secilen taktik", "التكتيك المختار", "所选战术", "選択した戦術", "선택한 전술"), nomeTatica(taticaAtual));
     do {
         int evento;
         minuto += 5;
         printf("\n%d' - %s: %s %d x %d %s | %s: %d\n",
                minuto,
                texto("Placar", "Score", "Marcador", "Risultato", "Score", "Spielstand", "Skor", "النتيجة", "比分", "スコア", "점수"),
-               nomesSelecoes[selecaoEscolhida], golsMarcados,
-               golsSofridos, nomesSelecoes[selecaoAdversaria],
+               nomeSelecao(selecaoEscolhida), golsMarcados,
+               golsSofridos, nomeSelecao(selecaoAdversaria),
                texto("Entrosamento", "Teamwork", "Compañerismo", "Intesa", "Cohesion", "Zusammenspiel", "Uyum", "الانسجام", "默契", "連携", "팀워크"), entrosamento);
         evento = rand() % 100;
         if (evento < 35) {
@@ -647,8 +658,8 @@ void jogarPartida(int selecaoEscolhida) {
     } while (minuto < 90);
 
     printf("\n========== %s ==========\n", texto("FIM DE JOGO", "FULL TIME", "FINAL DEL PARTIDO", "FINE DELLA PARTITA", "FIN DU MATCH", "SPIELENDE", "MAC SONU", "نهاية المباراة", "比赛结束", "試合終了", "경기 종료"));
-    printf("%s: %s %d x %d %s\n", texto("Placar Final", "Final Score", "Marcador final", "Risultato finale", "Score final", "Endstand", "Son skor", "النتيجة النهائية", "最终比分", "最終スコア", "최종 점수"), nomesSelecoes[selecaoEscolhida],
-           golsMarcados, golsSofridos, nomesSelecoes[selecaoAdversaria]);
+    printf("%s: %s %d x %d %s\n", texto("Placar Final", "Final Score", "Marcador final", "Risultato finale", "Score final", "Endstand", "Son skor", "النتيجة النهائية", "最终比分", "最終スコア", "최종 점수"), nomeSelecao(selecaoEscolhida),
+           golsMarcados, golsSofridos, nomeSelecao(selecaoAdversaria));
     printf("%s: %d | %s: %d | %s: %d | %s: %d\n",
            texto("Ataques", "Attacks", "Ataques", "Attacchi", "Attaques", "Angriffe", "Hucumlar", "الهجمات", "进攻", "攻撃", "공격"),
            ataques,
@@ -677,13 +688,18 @@ int escolherSelecao(void) {
     int opcao;
     printf("%s:\n", texto("Escolha sua selecao", "Choose your team", "Elige tu seleccion", "Scegli la tua nazionale", "Choisissez votre equipe", "Wahlen Sie Ihre Mannschaft", "Takiminizi secin", "اختر منتخبك", "选择你的球队", "代表チームを選択", "국가대표팀을 선택하세요"));
     for (int i = 0; i < 5; i++) {
-        printf("[%d] %s (Energia %d | Habilidade %d | Defesa %d)\n",
-               i + 1, nomesSelecoes[i], matrizAtributos[i][0],
-               matrizAtributos[i][1], matrizAtributos[i][2]);
+        printf("[%d] %s (%s %d | %s %d | %s %d)\n",
+               i + 1, nomeSelecao(i),
+               texto("Energia", "Energy", "Energia", "Energia", "Energie", "Energie", "Enerji", "الطاقة", "体力", "体力", "체력"),
+               matrizAtributos[i][0],
+               texto("Habilidade", "Skill", "Habilidad", "Abilita", "Technique", "Fertigkeit", "Yetenek", "المهارة", "能力", "スキル", "능력"),
+               matrizAtributos[i][1],
+               texto("Defesa", "Defense", "Defensa", "Difesa", "Defense", "Verteidigung", "Savunma", "الدفاع", "防守", "ディフェンス", "수비"),
+               matrizAtributos[i][2]);
     }
     printf("> ");
     opcao = lerOpcao(1, 5);
-    printf("%s %s!\n", texto("Voce escolheu", "You chose", "Has elegido", "Hai scelto", "Vous avez choisi", "Sie haben gewahlt", "Sectiniz", "لقد اخترت", "你选择了", "選択したチーム：", "선택한 팀:"), nomesSelecoes[opcao - 1]);
+    printf("%s %s!\n", texto("Voce escolheu", "You chose", "Has elegido", "Hai scelto", "Vous avez choisi", "Sie haben gewahlt", "Sectiniz", "لقد اخترت", "你选择了", "選択したチーム：", "선택한 팀:"), nomeSelecao(opcao - 1));
     return opcao - 1;
 }
 
@@ -701,15 +717,15 @@ void jogarPartida(int selecaoEscolhida);
 
 void mostrarAdversario(void) {
     printf("\n=========== %s ===========\n", texto("ANALISE DO ADVERSARIO", "OPPONENT ANALYSIS", "ANALISIS DEL RIVAL", "ANALISI DELL'AVVERSARIO", "ANALYSE DE L'ADVERSAIRE", "GEGNERANALYSE", "RAKIP ANALIZI", "تحليل الخصم", "对手分析", "相手分析", "상대 분석"));
-    printf("%s: %s\n", texto("Proximo adversario", "Next opponent", "Proximo rival", "Prossimo avversario", "Prochain adversaire", "Nachster Gegner", "Siradaki rakip", "الخصم القادم", "下一个对手", "次の相手", "다음 상대"), nomesSelecoes[selecaoAdversaria]);
-    printf("%s: %s\n", texto("Tatica adversaria", "Opponent tactic", "Tactica rival", "Tattica avversaria", "Tactique adverse", "Gegnerische Taktik", "Rakip taktigi", "تكتيك الخصم", "对手战术", "相手の戦術", "상대 전술"), nomesTaticas[taticasAdversarias[selecaoAdversaria]]);
+    printf("%s: %s\n", texto("Proximo adversario", "Next opponent", "Proximo rival", "Prossimo avversario", "Prochain adversaire", "Nachster Gegner", "Siradaki rakip", "الخصم القادم", "下一个对手", "次の相手", "다음 상대"), nomeSelecao(selecaoAdversaria));
+    printf("%s: %s\n", texto("Tatica adversaria", "Opponent tactic", "Tactica rival", "Tattica avversaria", "Tactique adverse", "Gegnerische Taktik", "Rakip taktigi", "تكتيك الخصم", "对手战术", "相手の戦術", "상대 전술"), nomeTatica(taticasAdversarias[selecaoAdversaria]));
     printf("%s: %s %d | %s %d | %s %d\n",
            texto("Atributos", "Attributes", "Atributos", "Attributi", "Attributs", "Attribute", "Ozellikler", "الخصائص", "属性", "能力", "능력"),
            texto("Energia", "Energy", "Energia", "Energia", "Energie", "Energie", "Enerji", "الطاقة", "体力", "体力", "체력"),
            matrizAtributos[selecaoAdversaria][0],
-           texto("Energia", "Energy", "Energia", "Energia", "Energie", "Energie", "Enerji", "الطاقة", "体力", "体力", "체력"),
-           matrizAtributos[selecaoAdversaria][1],
            texto("Habilidade", "Skill", "Habilidad", "Abilita", "Technique", "Fertigkeit", "Yetenek", "المهارة", "能力", "スキル", "능력"),
+           matrizAtributos[selecaoAdversaria][1],
+           texto("Defesa", "Defense", "Defensa", "Difesa", "Defense", "Verteidigung", "Savunma", "الدفاع", "防守", "ディフェンス", "수비"),
            matrizAtributos[selecaoAdversaria][2]);
     printf("=============================================\n");
 }
@@ -719,9 +735,9 @@ void prepararPartida(int selecaoEscolhida) {
 
     do {
         printf("\n=============== %s ===============\n", texto("PRE-JOGO", "PRE-MATCH", "PREPARTIDO", "PRE-PARTITA", "AVANT-MATCH", "VORSPIEL", "MAC ONCESI", "ما قبل المباراة", "赛前", "試合前", "경기 전"));
-        printf("%s x %s\n", nomesSelecoes[selecaoEscolhida],
-               nomesSelecoes[selecaoAdversaria]);
-        printf("%s: %s\n", texto("Sua tatica", "Your tactic", "Tu tactica", "La tua tattica", "Votre tactique", "Ihre Taktik", "Taktiginiz", "تكتيكك", "你的战术", "あなたの戦術", "내 전술"), nomesTaticas[taticaAtual]);
+        printf("%s x %s\n", nomeSelecao(selecaoEscolhida),
+               nomeSelecao(selecaoAdversaria));
+        printf("%s: %s\n", texto("Sua tatica", "Your tactic", "Tu tactica", "La tua tattica", "Votre tactique", "Ihre Taktik", "Taktiginiz", "تكتيكك", "你的战术", "あなたの戦術", "내 전술"), nomeTatica(taticaAtual));
         mostrarAdversario();
         printf("[1] %s\n", texto("Confirmar e iniciar partida", "Confirm and start match", "Confirmar e iniciar partido", "Conferma e inizia la partita", "Confirmer et commencer le match", "Bestatigen und Spiel starten", "Onayla ve maci baslat", "تأكيد وبدء المباراة", "确认并开始比赛", "確認して試合開始", "확인하고 경기 시작"));
         printf("[2] %s\n", texto("Alterar sua tatica", "Change your tactic", "Cambiar tu tactica", "Cambia la tua tattica", "Changer votre tactique", "Taktik andern", "Taktiginizi degistirin", "تغيير تكتيكك", "更改你的战术", "戦術を変更", "전술 변경"));
@@ -764,13 +780,13 @@ int main(void) {
                texto("Tecnico", "Coach", "Entrenador", "Allenatore", "Entraineur", "Trainer", "Teknik direktor", "المدرب", "教练", "監督", "감독"),
                tecnico,
                texto("Selecao", "Team", "Seleccion", "Nazionale", "Equipe", "Mannschaft", "Takim", "المنتخب", "球队", "代表チーム", "팀"),
-               nomesSelecoes[selecaoEscolhida]);
-        printf("%s: %s\n", texto("Tatica atual", "Current tactic", "Tactica actual", "Tattica attuale", "Tactique actuelle", "Aktuelle Taktik", "Mevcut taktik", "التكتيك الحالي", "当前战术", "現在の戦術", "현재 전술"), nomesTaticas[taticaAtual]);
+               nomeSelecao(selecaoEscolhida));
+        printf("%s: %s\n", texto("Tatica atual", "Current tactic", "Tactica actual", "Tattica attuale", "Tactique actuelle", "Aktuelle Taktik", "Mevcut taktik", "التكتيك الحالي", "当前战术", "現在の戦術", "현재 전술"), nomeTatica(taticaAtual));
         printf("%s: %s | %s: %s\n",
                texto("Proximo adversario", "Next opponent", "Proximo rival", "Prossimo avversario", "Prochain adversaire", "Nachster Gegner", "Siradaki rakip", "الخصم القادم", "下一个对手", "次の相手", "다음 상대"),
-               nomesSelecoes[selecaoAdversaria],
+               nomeSelecao(selecaoAdversaria),
                texto("Tatica", "Tactic", "Tactica", "Tattica", "Tactique", "Taktik", "Taktik", "التكتيك", "战术", "戦術", "전술"),
-               nomesTaticas[taticasAdversarias[selecaoAdversaria]]);
+               nomeTatica(taticasAdversarias[selecaoAdversaria]));
         printf("[1] %s\n[2] %s\n[3] %s\n",
                texto("Ver pre-jogo e iniciar partida", "View pre-match and start", "Ver prepartido e iniciar", "Vedi pre-partita e inizia", "Voir l'avant-match et commencer", "Vorspiel ansehen und starten", "Mac oncesini gor ve baslat", "عرض ما قبل المباراة وابدأ", "查看赛前并开始", "試合前画面と開始", "경기 전 보기 및 시작"),
                texto("Ver elenco e taticas", "View squad and tactics", "Ver plantilla y tacticas", "Vedi rosa e tattiche", "Voir l'effectif et les tactiques", "Kader und Taktik ansehen", "Kadro ve taktigi gor", "عرض الفريق والتكتيكات", "查看阵容和战术", "選手と戦術を見る", "선수단 및 전술 보기"),
@@ -796,3 +812,4 @@ int main(void) {
     } while (opcao != 6);
     return 0;
 }
+//.
